@@ -24,7 +24,7 @@ public class Board {
     @Column
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @CreationTimestamp

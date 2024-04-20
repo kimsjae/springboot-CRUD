@@ -3,39 +3,24 @@ package shop.mtcoding.blog.board;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
+@Import(BoardRepository.class)
 class BoardRepositoryTest {
     @Autowired
     BoardRepository boardRepository;
 
     @Test
-    void findAll_test() {
-        boardRepository.findAll();
-    }
-
-    @Test
-    void findById_test() {
-        // given
-        Integer id = 2;
-        //when
-        Board board = boardRepository.findById(id);
-        //then
-        System.out.println("제목_test : " + board.getTitle());
-        System.out.println("내용 : " + board.getContent());
-    }
-
-    @Test
-    void deleteById_test() {
+    void findByIdJoinUser_test() {
         // given
         Integer id = 4;
         // when
-        boardRepository.deleteById(id);
-        //then
-        List<Board> boardList = boardRepository.findAll();
-        Assertions.assertThat(boardList.size()).isEqualTo(3);
+        Board board = boardRepository.findByIdJoinUser(id);
+        // then
+        Assertions.assertThat(board.getUser().getId()).isEqualTo(3);
     }
 }

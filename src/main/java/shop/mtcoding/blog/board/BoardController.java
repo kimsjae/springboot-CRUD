@@ -12,8 +12,9 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
-    private final BoardRepository boardRepository;
+    private final BoardNativeRepository boardNativeRepository;
     private final BoardPersistRepository boardPersistRepository;
+    private final BoardRepository boardRepository;
 
 // GetMapping
     // 메인페이지, 글목록보기
@@ -33,7 +34,7 @@ public class BoardController {
     // 글상세보기 이동
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, Model model) {
-        Board board = boardPersistRepository.findById(id);
+        Board board = boardRepository.findByIdJoinUser(id);
         model.addAttribute("board", board);
         return "board/detail";
     }
@@ -58,7 +59,7 @@ public class BoardController {
     // 글쓰기
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
-        boardRepository.save(reqDTO.getTitle(), reqDTO.getContent());
+        boardNativeRepository.save(reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/";
     }
 
