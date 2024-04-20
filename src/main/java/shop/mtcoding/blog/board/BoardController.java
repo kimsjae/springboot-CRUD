@@ -13,12 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardRepository boardRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
 // GetMapping
     // 메인페이지, 글목록보기
     @GetMapping("/" )
     public String index(Model model) {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         model.addAttribute("boardList", boardList);
         return "index";
     }
