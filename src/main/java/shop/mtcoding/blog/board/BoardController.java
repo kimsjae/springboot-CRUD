@@ -42,7 +42,7 @@ public class BoardController {
     @GetMapping("/board/delete/{id}")
     public String delete(@PathVariable Integer id) {
         System.out.println("id : " + id);
-        boardRepository.deleteById(id);
+        boardPersistRepository.deleteById(id);
         return "redirect:/";
     }
 
