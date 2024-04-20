@@ -37,6 +37,14 @@ public class BoardController {
         return "board/detail";
     }
 
+    // 글삭제
+    @GetMapping("/board/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        System.out.println("id : " + id);
+        boardRepository.deleteById(id);
+        return "redirect:/";
+    }
+
 // PostMapping
     // 글쓰기
     @PostMapping("/board/save")

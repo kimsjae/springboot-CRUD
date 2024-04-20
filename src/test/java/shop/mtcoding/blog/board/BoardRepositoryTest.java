@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 class BoardRepositoryTest {
     @Autowired
@@ -24,5 +26,16 @@ class BoardRepositoryTest {
         //then
         System.out.println("제목_test : " + board.getTitle());
         System.out.println("내용 : " + board.getContent());
+    }
+
+    @Test
+    void deleteById_test() {
+        // given
+        Integer id = 4;
+        // when
+        boardRepository.deleteById(id);
+        //then
+        List<Board> boardList = boardRepository.findAll();
+        Assertions.assertThat(boardList.size()).isEqualTo(3);
     }
 }
