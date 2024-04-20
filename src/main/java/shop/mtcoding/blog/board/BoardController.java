@@ -20,7 +20,7 @@ public class BoardController {
     // 메인페이지, 글목록보기
     @GetMapping("/" )
     public String index(Model model) {
-        List<Board> boardList = boardPersistRepository.findAll();
+        List<Board> boardList = boardRepository.findAll();
         model.addAttribute("boardList", boardList);
         return "index";
     }
