@@ -1,11 +1,13 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class BoardController {
     private final BoardNativeRepository boardNativeRepository;
     private final BoardPersistRepository boardPersistRepository;
     private final BoardRepository boardRepository;
+    private final HttpSession session;
 
 // GetMapping
     // 메인페이지, 글목록보기
@@ -59,7 +62,8 @@ public class BoardController {
     // 글쓰기
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO) {
-        boardNativeRepository.save(reqDTO.getTitle(), reqDTO.getContent());
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        boardRepository.save(reqDTO.toEntity(sessionUser));
         return "redirect:/";
     }
 
