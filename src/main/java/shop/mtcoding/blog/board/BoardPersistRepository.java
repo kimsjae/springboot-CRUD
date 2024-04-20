@@ -25,4 +25,10 @@ public class BoardPersistRepository {
         Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
         return query.getResultList();
     }
+
+    // 글상세보기
+    public Board findById(Integer id) {
+        Board board = em.find(Board.class, id);
+        return board;
+    }
 }

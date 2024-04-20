@@ -35,7 +35,7 @@ public class BoardRepository {
         return (Board) query.getSingleResult();
     }
 
-    // 글삭제
+    // 글삭제하기
     @Transactional
     public void deleteById(Integer id) {
         Query query = em.createNativeQuery("delete from board_tb where id = ?");

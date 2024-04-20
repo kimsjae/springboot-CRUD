@@ -33,7 +33,7 @@ public class BoardController {
     // 글상세보기 이동
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, Model model) {
-        Board board = boardRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         model.addAttribute("board", board);
         return "board/detail";
     }
