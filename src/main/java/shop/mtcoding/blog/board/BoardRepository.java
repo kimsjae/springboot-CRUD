@@ -46,7 +46,6 @@ public class BoardRepository {
         Board board = em.find(Board.class, id);
         return board;
     }
-
     @Transactional
     public Board updateById(Integer id, String title, String content) {
         Board board = findById(id);

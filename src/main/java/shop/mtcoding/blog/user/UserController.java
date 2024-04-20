@@ -43,4 +43,11 @@ public class UserController {
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
+
+    // 회원가입
+    @PostMapping("/join")
+    public String join(UserRequest.JoinDTO reqDTO) {
+        userRepository.save(reqDTO.toEntity());
+        return "redirect:/login-form";
+    }
 }
