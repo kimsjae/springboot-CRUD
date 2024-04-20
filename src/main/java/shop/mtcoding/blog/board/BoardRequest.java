@@ -12,4 +12,10 @@ public class BoardRequest {
             return new Board(title, content);
         }
     }
+
+    @Data
+    public static class UpdateDTO {
+        private String title;
+        private String content;
+    }
 }
