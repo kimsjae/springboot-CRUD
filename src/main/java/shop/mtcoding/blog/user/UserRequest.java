@@ -24,4 +24,10 @@ public class UserRequest {
                     .build();
         }
     }
+
+    @Data
+    public static class UpdateDTO {
+        private String password;
+        private String email;
+    }
 }

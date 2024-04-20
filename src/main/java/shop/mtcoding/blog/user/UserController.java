@@ -3,6 +3,7 @@ package shop.mtcoding.blog.user;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,8 +24,12 @@ public class UserController {
         return "user/login-form";
     }
 
+    // 회원 수정 폼으로 이동
     @GetMapping("/user/update-form")
-    public String updateForm() {
+    public String updateForm(Model model) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User user = userRepository.findById(sessionUser.getId());
+        model.addAttribute("user", user);
         return "user/update-form";
     }
 
@@ -49,5 +54,14 @@ public class UserController {
     public String join(UserRequest.JoinDTO reqDTO) {
         userRepository.save(reqDTO.toEntity());
         return "redirect:/login-form";
+    }
+
+    // 회원수정
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User newSessionUser = userRepository.updateById(sessionUser.getId(), reqDTO.getPassword(), reqDTO.getEmail());
+        session.setAttribute("sessionUser", newSessionUser);
+        return "redirect:/";
     }
 }

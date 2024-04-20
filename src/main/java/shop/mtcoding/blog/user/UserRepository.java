@@ -25,4 +25,18 @@ public class UserRepository {
         em.persist(user);
         return user;
     }
+
+    // 회원수정
+    public User findById(Integer id) {
+        User user = em.find(User.class, id);
+        return user;
+    }
+
+    @Transactional
+    public User updateById(Integer id, String password, String email) {
+        User user = findById(id);
+        user.setPassword(password);
+        user.setEmail(email);
+        return user;
+    }
 }
