@@ -4,7 +4,9 @@
 
     <!-- 수정삭제버튼 -->
     <div class="d-flex justify-content-end">
-        <button class="btn btn-warning me-1">수정</button>
+        <form action="/board/update-form/{{id}}" method="get">
+            <button class="btn btn-warning me-1">수정</button>
+        </form>
         <form action="/board/delete/{{id}}" method="get">
             <button class="btn btn-danger">삭제</button>
         </form>

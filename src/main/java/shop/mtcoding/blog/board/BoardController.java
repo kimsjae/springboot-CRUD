@@ -45,11 +45,26 @@ public class BoardController {
         return "redirect:/";
     }
 
+    // 글수정하기 화면 이동
+    @GetMapping("/board/update-form/{id}")
+    public String update(@PathVariable Integer id, Model model) {
+        Board board = boardRepository.findById(id);
+        model.addAttribute("board", board);
+        return "board/update-form";
+    }
+
 // PostMapping
     // 글쓰기
     @PostMapping("/board/save")
     public String save(String title, String content) {
         boardRepository.save(title, content);
         return "board/detail";
+    }
+
+    // 글수정하기
+    @PostMapping("/board/update/{id}")
+    public String update(@PathVariable Integer id, String title, String content) {
+        boardRepository.updateById(title, content, id);
+        return "redirect:/board/" + id;
     }
 }

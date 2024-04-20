@@ -42,4 +42,14 @@ public class BoardRepository {
         query.setParameter(1, id);
         query.executeUpdate();
     }
+
+    // 글수정하기
+    @Transactional
+    public void updateById(String title, String content, Integer id) {
+        Query query = em.createNativeQuery("update board_tb set title = ?, content = ? where id = ?");
+        query.setParameter(1, title);
+        query.setParameter(2, content);
+        query.setParameter(3, id);
+        query.executeUpdate();
+    }
 }
