@@ -52,7 +52,7 @@ public class BoardController {
     // 글수정하기 화면 이동
     @GetMapping("/board/update-form/{id}")
     public String update(@PathVariable Integer id, Model model) {
-        Board board = boardPersistRepository.findById(id);
+        Board board = boardRepository.findById(id);
         model.addAttribute("board", board);
         return "board/update-form";
     }
@@ -69,7 +69,7 @@ public class BoardController {
     // 글수정하기
     @PostMapping("/board/update/{id}")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
-        boardPersistRepository.updateById(reqDTO, id);
+        boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/board/" + id;
     }
 }

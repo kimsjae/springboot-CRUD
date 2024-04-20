@@ -40,4 +40,19 @@ public class BoardRepository {
         query.setParameter("id", id);
         query.executeUpdate();
     }
+
+    // 글수정하기
+    public Board findById(Integer id) {
+        Board board = em.find(Board.class, id);
+        return board;
+    }
+
+    @Transactional
+    public Board updateById(Integer id, String title, String content) {
+        Board board = findById(id);
+        board.setTitle(title);
+        board.setContent(content);
+        return board;
+    }
+
 }
