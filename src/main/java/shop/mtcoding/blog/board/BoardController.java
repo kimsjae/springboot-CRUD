@@ -2,9 +2,12 @@ package shop.mtcoding.blog.board;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -12,9 +15,11 @@ public class BoardController {
     private final BoardRepository boardRepository;
 
 // GetMapping
-    // 메인페이지
+    // 메인페이지, 글목록보기
     @GetMapping("/" )
-    public String index() {
+    public String index(Model model) {
+        List<Board> boardList = boardRepository.findAll();
+        model.addAttribute("boardList", boardList);
         return "index";
     }
 
