@@ -56,9 +56,9 @@ public class BoardController {
 // PostMapping
     // 글쓰기
     @PostMapping("/board/save")
-    public String save(String title, String content) {
-        boardRepository.save(title, content);
-        return "board/detail";
+    public String save(BoardRequest.SaveDTO reqDTO) {
+        boardRepository.save(reqDTO.getTitle(), reqDTO.getContent());
+        return "redirect:/";
     }
 
     // 글수정하기
