@@ -42,11 +42,10 @@ public class BoardController {
         return "board/detail";
     }
 
-    // 글삭제
+    // 글삭제하기
     @GetMapping("/board/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        System.out.println("id : " + id);
-        boardPersistRepository.deleteById(id);
+        boardRepository.deleteById(id);
         return "redirect:/";
     }
 
