@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import shop.mtcoding.blog.user.User;
 
 import java.sql.Timestamp;
 
@@ -23,8 +24,20 @@ public class Board {
     @Column
     private String content;
 
+    @ManyToOne
+    private User user;
+
     @CreationTimestamp
     private Timestamp createdAt;
+
+    @Builder
+    public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.user = user;
+        this.createdAt = createdAt;
+    }
 
     public Board(String title, String content) {
         this.title = title;
