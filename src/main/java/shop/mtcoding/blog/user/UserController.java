@@ -16,6 +16,7 @@ import shop.mtcoding.blog._core.errors.exception.Exception401;
 public class UserController {
     private final UserRepository userRepository;
     private final HttpSession session;
+    private final UserService userService;
 
 // GetMapping
     @GetMapping("/join-form")
@@ -32,7 +33,7 @@ public class UserController {
     @GetMapping("/user/update-form")
     public String updateForm(Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        User user = userRepository.findById(sessionUser.getId());
+        User user = userService.회원조회(sessionUser.getId());
         model.addAttribute("user", user);
         return "user/update-form";
     }
@@ -48,23 +49,15 @@ public class UserController {
     // 로그인
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
-        try {
-            User sessionUser = userRepository.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword());
-            session.setAttribute("sessionUser", sessionUser);
-            return "redirect:/";
-        }catch (EmptyResultDataAccessException e){
-            throw new Exception401("유저네임 혹은 비밀번호가 틀렸어요");
-        }
+        User sessionUser = userService.로그인(reqDTO);
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
     }
 
     // 회원가입
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        try {
-            userRepository.save(reqDTO.toEntity());
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception400("동일한 유저네임이 존재합니다");
-        }
+        userService.회원가입(reqDTO);
         return "redirect:/login-form";
     }
 
@@ -72,7 +65,7 @@ public class UserController {
     @PostMapping("/user/update")
     public String update(UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        User newSessionUser = userRepository.updateById(sessionUser.getId(), reqDTO.getPassword(), reqDTO.getEmail());
+        User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
         session.setAttribute("sessionUser", newSessionUser);
         return "redirect:/";
     }
