@@ -5,9 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.user.User;
 
@@ -31,14 +29,8 @@ public class BoardController {
         return "index";
     }
 
-    // 글쓰기 화면 이동
-    @GetMapping("/board/save-form")
-    public String saveForm() {
-        return "board/save-form";
-    }
-
     // 글상세보기 이동
-    @GetMapping("/board/{id}")
+    @GetMapping("/api/boards/detail/{id}")
     public String detail(@PathVariable Integer id, Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardService.글상세보기(id, sessionUser);
@@ -48,7 +40,7 @@ public class BoardController {
     }
 
     // 글수정하기 화면 이동
-    @GetMapping("/board/update-form/{id}")
+    @GetMapping("/api/boards/{id}")
     public String update(@PathVariable Integer id, Model model) {
         Board board = boardService.글조회(id);
         model.addAttribute("board", board);
@@ -57,7 +49,7 @@ public class BoardController {
 
 // PostMapping
     // 글쓰기
-    @PostMapping("/board/save")
+    @PostMapping("/api/boards")
     public String save(BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardService.글쓰기(reqDTO, sessionUser);
@@ -65,7 +57,7 @@ public class BoardController {
     }
 
     // 글수정하기
-    @PostMapping("/board/update/{id}")
+    @PutMapping("/api/boards/{id}")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardService.글조회(id);
@@ -78,8 +70,9 @@ public class BoardController {
         return "redirect:/board/" + id;
     }
 
+// DeleteMapping
     // 글삭제하기
-    @PostMapping("/board/delete/{id}")
+    @DeleteMapping("/api/boards/{id}")
     public String delete(@PathVariable Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardService.글조회(id);

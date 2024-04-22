@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import shop.mtcoding.blog._core.errors.exception.Exception400;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 
@@ -19,18 +20,8 @@ public class UserController {
     private final UserService userService;
 
 // GetMapping
-    @GetMapping("/join-form")
-    public String joinForm() {
-        return "user/join-form";
-    }
-
-    @GetMapping("/login-form")
-    public String loginForm() {
-        return "user/login-form";
-    }
-
     // 회원 수정 폼으로 이동
-    @GetMapping("/user/update-form")
+    @GetMapping("/api/users")
     public String updateForm(Model model) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User user = userService.회원조회(sessionUser.getId());
@@ -61,8 +52,9 @@ public class UserController {
         return "redirect:/login-form";
     }
 
+// PutMapping
     // 회원수정
-    @PostMapping("/user/update")
+    @PutMapping("/api/users")
     public String update(UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
