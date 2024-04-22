@@ -71,14 +71,24 @@ public class BoardService {
         Board board = boardJpaRepository.findByIdJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
 
-        boolean isOwner = false;
+        boolean isBoardOwner = false;
         if (sessionUser != null) {
             if (sessionUser.getId() == board.getUser().getId()) {
-                isOwner = true;
+                isBoardOwner = true;
             }
         }
+        board.setBoardOwner(isBoardOwner);
 
-        board.setOwner(isOwner);
+        board.getReplies().forEach(reply -> {
+            boolean isReplyOwner = false;
+
+            if (sessionUser != null) {
+                if (reply.getUser().getId() == sessionUser.getId()) {
+                    isReplyOwner = true;
+                }
+            }
+            reply.setReplyOwner(isReplyOwner);
+        });
 
         return board;
     }
