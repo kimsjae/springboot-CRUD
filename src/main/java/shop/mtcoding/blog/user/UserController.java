@@ -21,8 +21,8 @@ public class UserController {
     @GetMapping("/api/users")
     public ResponseEntity<?> updateForm() {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        User user = userService.회원조회(sessionUser.getId());
-        return ResponseEntity.ok(new ApiUtil(user));
+        UserResponse.DTO respDTO = userService.회원조회(sessionUser.getId());
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     // 로그아웃

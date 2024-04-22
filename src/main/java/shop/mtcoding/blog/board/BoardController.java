@@ -21,16 +21,16 @@ public class BoardController {
     // 메인페이지, 글목록보기
     @GetMapping("/" )
     public ResponseEntity<?> index() {
-        List<Board> boardList = boardService.글목록조회();
-        return ResponseEntity.ok(new ApiUtil(boardList));
+        List<BoardResponse.MainDTO> respDTO = boardService.글목록조회();
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     // 글상세보기 이동
     @GetMapping("/api/boards/detail/{id}")
-    public ResponseEntity<?> detail(@PathVariable Integer id) {
+    public ResponseEntity<?> detail(@PathVariable Integer id){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.글상세보기(id, sessionUser);
-        return ResponseEntity.ok(new ApiUtil(board));
+        BoardResponse.DetailDTO respDTO = boardService.글상세보기(id, sessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     // 글수정하기 화면 이동

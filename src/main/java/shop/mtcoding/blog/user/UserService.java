@@ -29,11 +29,11 @@ public class UserService {
     }
 
     // 회원조회
-    public User 회원조회(Integer id) {
+    public UserResponse.DTO 회원조회(Integer id) {
         User user = userJpaRepository.findById(id)
                 .orElseThrow(() -> new Exception404("회원 정보를 찾을 수 없습니다."));
 
-        return user;
+        return new UserResponse.DTO(user);
     }
 
     // 로그인

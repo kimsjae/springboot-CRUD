@@ -62,36 +62,18 @@ public class BoardService {
     }
 
     // 글목록조회
-    public List<Board> 글목록조회() {
+    public List<BoardResponse.MainDTO> 글목록조회() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        List<Board> boardList = boardJpaRepository.findAll(sort);
 
-        return boardJpaRepository.findAll(sort);
+        return boardList.stream().map(board -> new BoardResponse.MainDTO(board)).toList();
     }
 
     // 글상세보기
-    public Board 글상세보기(Integer boardId, User sessionUser) {
+    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
         Board board = boardJpaRepository.findByIdJoinUser(boardId)
-                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 
-        boolean isBoardOwner = false;
-        if (sessionUser != null) {
-            if (sessionUser.getId() == board.getUser().getId()) {
-                isBoardOwner = true;
-            }
-        }
-        board.setBoardOwner(isBoardOwner);
-
-        board.getReplies().forEach(reply -> {
-            boolean isReplyOwner = false;
-
-            if (sessionUser != null) {
-                if (reply.getUser().getId() == sessionUser.getId()) {
-                    isReplyOwner = true;
-                }
-            }
-            reply.setReplyOwner(isReplyOwner);
-        });
-
-        return board;
+        return new BoardResponse.DetailDTO(board, sessionUser);
     }
 }
