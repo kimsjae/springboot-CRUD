@@ -37,6 +37,12 @@ public class Board {
     @Transient // 컬럼 추가 안 됨
     private boolean isBoardOwner;
 
+    /**
+     * fk제약조건 때문에 게시글을 삭제하면 댓글이 참조하는 게시글이 사라지기 때문에 삭제가 될 수 없음.
+     * <p>1. 댓글을 먼저 삭제하고, 게시글 삭제.</p>
+     * <p>2. 댓글의 fk에 값을 null로 변경하고 게시글 삭제.</p>
+     * <p>3. cascade 어노테이션을 이용하기.</p>
+     */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board", cascade = CascadeType.REMOVE)
     @OrderBy("id desc")
     private List<Reply> replies = new ArrayList<>();
